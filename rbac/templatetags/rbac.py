@@ -16,7 +16,7 @@ def static_menu(request):
     :return:
     '''
 
-    menu_list = request.session.get(settings.MENU_SESSION_KEY)
+    menu_list = request.session.get(settings.STATIC_SESSION_KEY)
 
     # static_menu.html中的所有{{ menu_list }}都会被替换为`menu_list`
     return {'menu_list': menu_list}
@@ -29,9 +29,8 @@ def dynamic_menu(request):
     :param request:
     :return:
     '''
-    print(request.navi)
 
-    menu_dict = request.session.get(settings.MENU_SESSION_KEY)
+    menu_dict = request.session.get(settings.STATIC_SESSION_KEY)
     # 对`menu_dict`的key进行排序-->key的列表
     keys_list = sorted(menu_dict)
     # 初始化有序列表
@@ -77,8 +76,6 @@ def has_access(request, name):
         return True
 
 
-##############################开始##############################
 @register.simple_tag
 def url_with_state(request, name, *args, **kwargs):
     return url.url_with_state(request, name, *args, **kwargs)
-##############################结束##############################

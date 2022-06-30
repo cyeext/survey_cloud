@@ -4,13 +4,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>路飞学城</title>
-    <link rel="shortcut icon" href="{% static 'imgs/luffy-study-logo.png' %}"/>
+    <title>监测云</title>
+    <link rel="shortcut icon" href="{% static 'imgs/logo.webp' %} ">
     <link rel="stylesheet" href="{% static 'plugins/bootstrap/css/bootstrap.css' %} "/>
     <link rel="stylesheet" href="{% static 'plugins/font-awesome/css/font-awesome.css' %} "/>
     <link rel="stylesheet" href="{% static 'css/commons.css' %} "/>
     <link rel="stylesheet" href="{% static 'css/nav.css' %} "/>
-    <link rel="stylesheet" href="{% static 'rbac/css/rbac.css' %}"/>
+    <link rel="stylesheet" href="{% static 'rbac/css/rbac.css' %}">
     <style>
         body {
             margin: 0;
@@ -102,22 +102,20 @@
 <div class="pg-header">
     <div class="nav">
         <div class="logo-area left">
-            <a href="#">
-                <img class="logo" src="{% static 'imgs/logo.svg' %}">
-                <span style="font-size: 18px;">路飞学城 </span>
+            <a href="{% url_with_state request 'index' %}">
+                <img class="logo" src="{% static 'imgs/logo.webp' %}">
+                <span style="font-size: 18px;">监测云 </span>
             </a>
         </div>
 
         <div class="left-menu left">
-            <a class="menu-item">资产管理</a>
-            <a class="menu-item">用户信息</a>
-            <a class="menu-item">路飞管理</a>
+{#            <a class="menu-item">员工管理</a>#}
+{#            <a class="menu-item">设备管理</a>#}
             <div class="menu-item">
                 <span>使用说明</span>
                 <i class="fa fa-caret-down" aria-hidden="true"></i>
                 <div class="more-info">
-                    <a href="#" class="more-item">管他什么菜单</a>
-                    <a href="#" class="more-item">实在是编不了</a>
+                    <a href="{% url_with_state request 'rbac:manual_list' %}" class="more-item">rbac文档v1.0</a>
                 </div>
             </div>
         </div>
@@ -131,7 +129,7 @@
 
                 <div class="more-info">
                     <a href="#" class="more-item">个人信息</a>
-                    <a href="/logout/" class="more-item">注销</a>
+                    <a href="{% url_with_state request 'logout' %}" class="more-item">注销</a>
                 </div>
             </div>
 

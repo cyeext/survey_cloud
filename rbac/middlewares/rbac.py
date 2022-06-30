@@ -1,7 +1,8 @@
 import re
+
+from django.conf import settings
 from django.http.response import HttpResponse
 from django.utils.deprecation import MiddlewareMixin
-from django.conf import settings
 
 
 class RbacMiddleware(MiddlewareMixin):
@@ -32,7 +33,7 @@ class RbacMiddleware(MiddlewareMixin):
 
         # 初始化导航条
         navi = [
-            {'title': '首页', 'url': '#'}
+            {'title': '首页', 'url': '/index/', 'class': 'active'}
         ]
 
         # 以下URL登录成功后即可访问
@@ -44,10 +45,11 @@ class RbacMiddleware(MiddlewareMixin):
                 request.navi = navi
                 return None
 
-
         # 权限列表为空，提示先登录
         if not access_dict:
             return HttpResponse("未获取到用户权限信息，请登录！")
+
+        navi[0]['class'] = None
 
         # 设置权限flag
         flag = False

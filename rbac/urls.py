@@ -1,5 +1,5 @@
 from django.conf.urls import url
-from rbac.views import role, user, menu
+from rbac.views import role, user, menu, manual
 
 app_name = 'rbac'
 
@@ -25,7 +25,7 @@ urlpatterns = [
     url(r'^access/del/(?P<pk>\d+)/$', menu.access_del, name='access_del'),
     url(r'^multi/access/$', menu.multi_access, name="multi_access"),
     url(r'^multi/access/del/(?P<pk>\d+)/$', menu.multi_access_del, name="multi_access_del"),
-##############################开始##############################
     url(r'^access/distribute/$', menu.access_distribute, name="access_distribute"),
-##############################结束##############################
+    url(r'^manual/list/$', manual.manual_list, name="manual_list"),
+    # url(r'^manual/add/$', manual.manual_add, name="manual_add"),
 ]

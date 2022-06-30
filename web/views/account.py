@@ -4,6 +4,7 @@
 from django.shortcuts import render, redirect
 from web import models
 from rbac.services import init_access
+from stark.utils.md5 import gen_md5
 
 
 def index(request):
@@ -32,11 +33,12 @@ def login(request):
     usr = request.POST.get("usr")
     psw = request.POST.get("psw")
     print(usr, psw)
-    user_obj = models.UserInfo.objects.filter(name=usr, password=psw).first()
+    user_obj = models.UserInfo.objects.filter(
+        name=usr, password=gen_md5(psw)).first()
     print(user_obj)
     if not user_obj:
         error = "用户名或密码错误!"
-        return render(request, "app01/login.html", {"error": error})
+        return render(request, "web/login.html", {"error": error})
     else:
         init_access.init_access(user_obj, request)
         return redirect("/index/")

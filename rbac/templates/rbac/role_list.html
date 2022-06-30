@@ -4,16 +4,20 @@
 
     <div class="luffy-container">
         <div class="btn-group" style="margin: 5px 0">
-            <a class="btn btn-primary btn-success" href="{% url 'rbac:role_add' %}">
-                <i class="fa fa-plus-square" aria-hidden="true"></i> 添加角色
-            </a>
+            {% comment %}{% if request|has_access:'rbac:role_add' %}{% endcomment %}
+                <a class="btn btn-primary" href="{% url 'rbac:role_add' %}">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i> 添加角色
+                </a>
+            {% comment %}{% endif %}{% endcomment %}
         </div>
         <table class="table table-bordered table-hover">
             <thead>
             <tr>
                 <th>序号</th>
                 <th>角色名称</th>
-                <th>选项</th>
+                {% comment %}{% if request|has_access:"rbac:role_edit" or request|has_access:"rbac:role_del" %}{% endcomment %}
+                    <th>选项</th>
+                {% comment %}{% endif %}{% endcomment %}
             </tr>
             </thead>
             <tbody>
@@ -21,14 +25,18 @@
                 <tr>
                     <td>{{ forloop.counter }}</td>
                     <td>{{ row.title }}</td>
-                    <td>
-                        <a style="color: #333333;" href="{% url 'rbac:role_edit' pk=row.id %}">
-                            <i class="fa fa-edit" aria-hidden="true"></i></a>
-                        <!--开始-->
-                        <a style="color: #d9534f;" href="{% url 'rbac:role_del' pk=row.id %}"><i
-                                class="fa fa-trash-o"></i></a>
-                        <!--结束-->
-                    </td>
+                    {% comment %}{% if request|has_access:"rbac:role_edit" or request|has_access:"rbac:role_del" %}{% endcomment %}
+                        <td>
+                            {% comment %}{% if request|has_access:'rbac:role_edit' %}{% endcomment %}
+                                <a style="color: #333333;" href="{% url 'rbac:role_edit' pk=row.id %}">
+                                    <i class="fa fa-edit" aria-hidden="true"></i></a>
+                            {% comment %}{% endif %}{% endcomment %}
+                            {% comment %}{% if request|has_access:'rbac:role_del' %}{% endcomment %}
+                                <a style="color: #d9534f;" href="{% url 'rbac:role_del' pk=row.id %}"><i
+                                        class="fa fa-trash-o"></i></a>
+                            {% comment %}{% endif %}{% endcomment %}
+                        </td>
+                    {% comment %}{% endif %}{% endcomment %}
 
                 </tr>
             {% endfor %}

@@ -80,7 +80,21 @@ class SensorHandler(StarkHandler):
         data_url = self.reverse_url(self.get_url_name("line"), pk)
         return render(request, 'web/graph_view.html', {'data_url': data_url})
 
-    field_list = ["name", "imei", get_choice_display("类型", "typo"), get_m2m_display("维护人", "maintainer"),
+    def multi_delete(self, request):
+        """multi_delete.
+        批量删除功能:
+            执行成功后默认跳转回list，如果要跳转到其他地方，
+            请返回一个重定向, e.g., return redirect('http://www.baidu.com')
+        :param self:
+        """
+        pk_list = request.POST.getlist("pk")
+        self.model_class.objects.filter(id__in=pk_list).delete()
+        # return redirect('http://www.baidu.com')
+
+    multi_delete.text = "批量删除"
+
+    action_list = [multi_delete, ]
+    field_list = [StarkHandler.display_checkbox, "name", "imei", get_choice_display("类型", "typo"), get_m2m_display("维护人", "maintainer"),
                   get_datetime_display("投产日期", "create_date"), get_choice_display("状态", "status"), display_record_graph]
 
     search_list = ["name__contains", "imei__contains", ]

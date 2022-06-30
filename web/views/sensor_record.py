@@ -33,3 +33,6 @@ class SensorRecordHandler(StarkHandler):
 
     field_list = ["sensor", get_datetime_display(
         "记录时间", "date_time"), "value", ]
+
+    order_list = ['sensor__name', ]
+    # order_list = ['value', ]

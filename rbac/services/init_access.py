@@ -32,7 +32,6 @@ def init_access(current_user, request):
             'p_title': item.get('access__pid__title'),
             'p_url': item.get('access__pid__url'),
         }
-        print(access_dict.keys())
 
         # 获取一级菜单id
         menu_id = item.get('access__menu__id')
@@ -58,4 +57,4 @@ def init_access(current_user, request):
             }
 
     request.session[settings.ACCESS_SESSION_KEY] = access_dict
-    request.session[settings.MENU_SESSION_KEY] = menu_dict
+    request.session[settings.STATIC_SESSION_KEY] = menu_dict

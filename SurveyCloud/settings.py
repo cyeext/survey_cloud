@@ -47,10 +47,11 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'rbac.middlewares.rbac.RbacMiddleware',  # rbac组件的权限校验中间件
 ]
 
 ROOT_URLCONF = 'SurveyCloud.urls'
@@ -127,3 +128,33 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+#########rbac组件相关配置############
+USERINFO = 'web.models.UserInfo'
+AUTO_DISCOVER_EXCLUDE = [
+    '/index/',
+    '/login/',
+    '/logout/',
+    '/admin/.*',
+]
+# 权限在session中存储的key
+ACCESS_SESSION_KEY = "access_url_list_key"
+
+# 静态菜单在session中存储的key
+MENU_SESSION_KEY = "menu_list_key"
+
+# 静态菜单在session中存储的key
+STATIC_SESSION_KEY = "menu_list_key"
+# 项目名/settings.py
+
+# 无需登录就能访问的URL名单
+VALID_URLS = [
+    '/login/',
+    '/admin/.*/',
+]
+
+# 登录成功就可以访问的URL名单
+LOGGED_URLS = [
+    '/index/',
+    '/logout/',
+]

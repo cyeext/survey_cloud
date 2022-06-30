@@ -8,6 +8,7 @@
     </style>
 {% endblock %}
 {% block content %}
+
     <div class="luffy-container">
         <div class="col-md-3">
             <div class="bs-example" data-example-id="table-within-panel">
@@ -15,52 +16,52 @@
                     <!-- Default panel contents -->
                     <div class="panel-heading">
                         <i class="fa fa-book" aria-hidden="true"></i> 静态菜单
-                        {% if request|has_access:"static_add" %}
-                            <a href="{% url_with_state request 'rbac:static_add' %}"
-                                class="btn right btn-success btn-xs"
-                                style="padding: 2px 8px; margin: -3px">
-                                <i class="fa fa-plus-circle" aria-hidden="true"></i> 新建
-                            </a>
-                        {% endif %}
+                        {#                        {% if request|has_access:"static_add" %}#}
+                        <a href="{% url_with_state request 'rbac:static_add' %}"
+                           class="btn right btn-success btn-xs"
+                           style="padding: 2px 8px; margin: -3px">
+                            <i class="fa fa-plus-circle" aria-hidden="true"></i> 新建
+                        </a>
+                        {#                        {% endif %}#}
                     </div>
                     <!-- Table -->
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>图标</th>
-                                {% if reqeuest|has_access:"static_edit" or request|has_access:"static_del" %}
-                                    <th>选项</th>
-                                {% endif %}
-                            </tr>
+                        <tr>
+                            <th>名称</th>
+                            <th>图标</th>
+                            {% comment %}{% if request|has_access:"static_edit" or request|has_access:"static_del" %}{% endcomment %}
+                                <th>选项</th>
+                            {% comment %}{% endif %}{% endcomment %}
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for row in menu_queryset %}
-                                <tr class="{% if row.id|safe == menu_id %}active{% endif %}">
-                                    <td>
-                                        <a href="?mid={{ row.id }}"> {{ row.title }} </a>
-                                    </td>
-                                    <td>
-                                        <i class="fa {{ row.icon }}" aria-hidden="true"></i>
-                                    </td>
-                                    <td>
-                                        {% if request|has_access:"static_edit" %}
-                                            <a style="color: #333333;"
-                                                href="{% url_with_state request 'rbac:static_edit' pk=row.id %}">
-                                                <i class="fa fa-edit" aria-hidden="true"></i>
-                                            </a>
-                                        {% endif %}
-                                        {% if request|has_access:"static_del" %}
-                                            <a style="color: #d9534f;"
-                                                href="{% url_with_state request 'rbac:static_del' pk=row.id %}">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        {% endif %}
-                                    </td>
+                        {% for row in menu_queryset %}
+                            <tr class="{% if row.id|safe == menu_id %}active{% endif %}">
+                                <td>
+                                    <a href="?mid={{ row.id }}"> {{ row.title }} </a>
+                                </td>
+                                <td>
+                                    <i class="fa {{ row.icon }}" aria-hidden="true"></i>
+                                </td>
+                                <td>
+                                    {% comment %}{% if request|has_access:"static_edit" %}{% endcomment %}
+                                        <a style="color: #333333;"
+                                           href="{% url_with_state request 'rbac:static_edit' pk=row.id %}">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                    {% comment %}{% endif %}{% endcomment %}
+                                    {% comment %}{% if request|has_access:"static_del" %}{% endcomment %}
+                                        <a style="color: #d9534f;"
+                                           href="{% url_with_state request 'rbac:static_del' pk=row.id %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    {% comment %}{% endif %}{% endcomment %}
+                                </td>
 
-                                </tr>
+                            </tr>
 
-                            {% endfor %}
+                        {% endfor %}
 
                         </tbody>
                     </table>
@@ -75,59 +76,59 @@
                     <div class="panel-heading">
                         <i class="fa fa-grav" aria-hidden="true"></i> 动态菜单
 
-                        {% if request|has_access:"dynamic_add" %}
+                        {% comment %}{% if request|has_access:"dynamic_add" %}{% endcomment %}
                             {% if menu_id %}
                                 <a href="{% url_with_state request 'rbac:dynamic_add' mid=menu_id %}"
-                                    class="btn right btn-success btn-xs"
-                                    style="padding: 2px 8px; margin: -3px">
+                                   class="btn right btn-success btn-xs"
+                                   style="padding: 2px 8px; margin: -3px">
                                     <i class="fa fa-plus-circle" aria-hidden="true"></i> 新建
                                 </a>
                             {% endif %}
-                        {% endif %}
+                        {% comment %}{% endif %}{% endcomment %}
                     </div>
                     <!-- Table -->
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>CODE&URL</th>
-                                {% if reqeuest|has_access:"dynamic_edit" or request|has_access:"dynamic_del" %}
-                                    <th>选项</th>
-                                {% endif %}
-                            </tr>
+                        <tr>
+                            <th>名称</th>
+                            <th>CODE&URL</th>
+                            {% comment %}{% if request|has_access:"dynamic_edit" or request|has_access:"dynamic_del" %}{% endcomment %}
+                                <th>选项</th>
+                            {% comment %}{% endif %}{% endcomment %}
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for row in dynamic_queryset %}
-                                <tr class="{% if row.id|safe == dynamic_id %}active{% endif %}">
-                                    <td rowspan="2">
-                                        <a href="?mid={{ menu_id }}&did={{ row.id }}"> {{ row.title }} </a>
-                                    </td>
-                                    <td>
-                                        {{ row.name }}
-                                    </td>
-                                    <td>
-                                        {% if request|has_access:"dynamic_edit" %}
-                                            <a style="color: #333333;"
-                                                href="{% url_with_state request 'rbac:dynamic_edit' pk=row.id %}">
-                                                <i class="fa fa-edit" aria-hidden="true"></i>
-                                            </a>
-                                        {% endif %}
-                                        {% if request|has_access:"dynamic_del" %}
-                                            <a style="color: #d9534f;"
-                                                href="{% url_with_state request 'rbac:dynamic_del' pk=row.id %}">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        {% endif %}
-                                    </td>
+                        {% for row in dynamic_queryset %}
+                            <tr class="{% if row.id|safe == dynamic_id %}active{% endif %}">
+                                <td rowspan="2">
+                                    <a href="?mid={{ menu_id }}&did={{ row.id }}"> {{ row.title }} </a>
+                                </td>
+                                <td>
+                                    {{ row.name }}
+                                </td>
+                                <td>
+                                    {% comment %}{% if request|has_access:"dynamic_edit" %}{% endcomment %}
+                                        <a style="color: #333333;"
+                                           href="{% url_with_state request 'rbac:dynamic_edit' pk=row.id %}">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                    {% comment %}{% endif %}{% endcomment %}
+                                    {% comment %}{% if request|has_access:"dynamic_del" %}{% endcomment %}
+                                        <a style="color: #d9534f;"
+                                           href="{% url_with_state request 'rbac:dynamic_del' pk=row.id %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    {% comment %}{% endif %}{% endcomment %}
+                                </td>
 
-                                </tr>
-                                <tr class="{% if row.id|safe == dynamic_id %}active{% endif %}">
-                                    <td colspan="2" style="border-top: 0">
-                                        {{ row.url }}
-                                    </td>
-                                </tr>
+                            </tr>
+                            <tr class="{% if row.id|safe == dynamic_id %}active{% endif %}">
+                                <td colspan="2" style="border-top: 0">
+                                    {{ row.url }}
+                                </td>
+                            </tr>
 
-                            {% endfor %}
+                        {% endfor %}
 
                         </tbody>
                     </table>
@@ -141,64 +142,68 @@
                     <div class="panel-heading">
                         <i class="fa fa-facebook" aria-hidden="true"></i> 权限
                         <div class="btn-group right">
-                            {% if dynamic_id %}
-                                <a href="{% url_with_state request 'rbac:access_add' did=dynamic_id %}"
-                                    class="btn right btn-success btn-xs"
-                                    style="padding: 2px 8px; margin: -3px">
-                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> 新建
+                            {% comment %}{% if request|has_access:"rbac:access_add" %}{% endcomment %}
+                                {% if dynamic_id %}
+                                    <a href="{% url_with_state request 'rbac:access_add' did=dynamic_id %}"
+                                       class="btn right btn-success btn-xs"
+                                       style="padding: 2px 8px; margin: -3px">
+                                        <i class="fa fa-plus-circle" aria-hidden="true"></i> 新建
+                                    </a>
+                                {% endif %}
+                            {% comment %}{% endif %}{% endcomment %}
+                            {% comment %}{% if request|has_access:"rbac:multi_access" %}{% endcomment %}
+                                <a href="{% url_with_state request 'rbac:multi_access' %}"
+                                   class="btn btn-primary btn-xs"
+                                   style="padding: 2px 8px; margin: -3px">
+                                    <i class="fa fa-mail-forward" aria-hidden="true"></i> 批量操作
                                 </a>
-                            {% endif %}
-                            <a href="{% url_with_state request 'rbac:multi_access' %}"
-                                class="btn btn-primary btn-xs"
-                                style="padding: 2px 8px; margin: -3px">
-                                <i class="fa fa-mail-forward" aria-hidden="true"></i> 批量操作
-                            </a>
+                            {% comment %}{% endif %}{% endcomment %}
 
                         </div>
                     </div>
                     <!-- Table -->
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th>名称</th>
-                                <th>CODE&URL</th>
-                                {% if reqeuest|has_access:"access_edit" or request|has_access:"access_del" %}
-                                    <th>选项</th>
-                                {% endif %}
-                            </tr>
+                        <tr>
+                            <th>名称</th>
+                            <th>CODE&URL</th>
+                            {% comment %}{% if request|has_access:"access_edit" or request|has_access:"access_del" %}{% endcomment %}
+                                <th>选项</th>
+                            {% comment %}{% endif %}{% endcomment %}
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for row in access_queryset %}
-                                <tr>
-                                    <td rowspan="2">
-                                        {{ row.title }}
-                                    </td>
-                                    <td>
-                                        {{ row.name }}
-                                    </td>
-                                    <td>
-                                        {% if request|has_access:"access_edit" %}
-                                            <a style="color: #333333;"
-                                                href="{% url_with_state request 'rbac:access_edit' pk=row.id %}">
-                                                <i class="fa fa-edit" aria-hidden="true"></i>
-                                            </a>
-                                        {% endif %}
-                                        {% if request|has_access:"access_del" %}
-                                            <a style="color: #d9534f;"
-                                                href="{% url_with_state request 'rbac:access_del' pk=row.id %}">
-                                                <i class="fa fa-trash-o"></i>
-                                            </a>
-                                        {% endif %}
-                                    </td>
+                        {% for row in access_queryset %}
+                            <tr>
+                                <td rowspan="2">
+                                    {{ row.title }}
+                                </td>
+                                <td>
+                                    {{ row.name }}
+                                </td>
+                                <td>
+                                    {% comment %}{% if request|has_access:"access_edit" %}{% endcomment %}
+                                        <a style="color: #333333;"
+                                           href="{% url_with_state request 'rbac:access_edit' pk=row.id %}">
+                                            <i class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                    {% comment %}{% endif %}{% endcomment %}
+                                    {% comment %}{% if request|has_access:"access_del" %}{% endcomment %}
+                                        <a style="color: #d9534f;"
+                                           href="{% url_with_state request 'rbac:access_del' pk=row.id %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+                                    {% comment %}{% endif %}{% endcomment %}
+                                </td>
 
-                                </tr>
-                                <tr>
-                                    <td colspan="2" style="border-top: 0">
-                                        {{ row.url }}
-                                    </td>
-                                </tr>
+                            </tr>
+                            <tr>
+                                <td colspan="2" style="border-top: 0">
+                                    {{ row.url }}
+                                </td>
+                            </tr>
 
-                            {% endfor %}
+                        {% endfor %}
 
                         </tbody>
                     </table>
@@ -206,6 +211,7 @@
             </div>
         </div>
     </div>
+
 {% endblock %}
 
 

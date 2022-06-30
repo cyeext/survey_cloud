@@ -1,0 +1,12 @@
+{% extends 'layout.html' %}
+{% load rbac %}
+{% load static %}
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/code.css' %}">
+{% endblock %}
+{% block content %}
+
+    <div class="luffy-container">
+        {{ content|safe }}
+    </div>
+{% endblock %}

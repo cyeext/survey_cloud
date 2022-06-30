@@ -64,5 +64,4 @@ def get_all_urls_dict():
     ordered_url_dict = OrderedDict()
     url_module = import_string(settings.ROOT_URLCONF)
     recursively_fetch_url_dict(None, "/", url_module.urlpatterns, ordered_url_dict)
-    print(ordered_url_dict)
     return ordered_url_dict

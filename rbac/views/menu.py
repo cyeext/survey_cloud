@@ -271,7 +271,6 @@ def multi_access(request):
     # 3. 计算待添加、删除和修改的url
     # 3.1 待添加的url的formset
     generate_url_set = auto_discover_url_name_set - access_name_set
-    print(access_dict)
     # generate_formset为空，说明为GET请求
     if not generate_formset:
         generate_formset = generate_formset_class(
@@ -332,7 +331,6 @@ def access_distribute(request):
     if not role_obj:
         rid = None
 
-##############################开始##############################
     if request.method == "POST" and request.POST.get("type") == "roles":
         roles_list = request.POST.getlist("roles")
         if not user_obj:
@@ -343,7 +341,6 @@ def access_distribute(request):
         if not role_obj:
             return HttpResponse("请先选择角色再分配权限")
         role_obj.access.set(access_list)
-##############################结束##############################
 
     # 获取当前用户所拥有的的角色
     if uid:

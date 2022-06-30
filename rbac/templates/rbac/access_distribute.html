@@ -1,0 +1,260 @@
+{% extends 'layout.html' %}
+{% load rbac %}
+{% block css %}
+    <style>
+        table {
+            font-size: 12px;
+        }
+        tr.active {
+            border-left: solid 3px #fdc00f;
+            background-color: #f1f7fd;
+        }
+        .user-area ul {
+            padding-left: 20px ;
+        }
+        .user-area li {
+            cursor: pointer;
+            padding: 2px 0;
+        }
+        .user-area li a {
+            display: block;
+        }
+        .user-area li.active {
+            font-weight: bolder;
+            color: red;
+        }
+        .user-area li.active a{
+            color: red;
+        }
+        .role-area tr td a {
+            display: block;
+        }
+        .access-area tr.root {
+            background-color: #f1f7fd;
+        }
+        .access-area tr.root td i {
+            margin: 3px;
+        }
+
+        .access-area .node {
+        }
+
+        .access-area tr.node input[type="checkbox"] {
+            margin: 0 5px;
+        }
+
+        .access-area tr.node .parent {
+            padding: 5px 0;
+        }
+
+        .access-area tr.node label {
+            font-weight: normal;
+            margin-bottom: 0;
+            font-size: 12px;
+        }
+
+        .access-area tr.node .children {
+            padding: 0 0 0 20px;
+        }
+
+        .access-area .node .children .child {
+            display: inline-block;
+            margin: 2px 5px;
+        }
+        table {
+            font-size: 12px;
+        }
+        .panel-body {
+            font-size: 12px;
+        }
+        .panel-body .form-control {
+            font-size: 12px;
+        }
+        .select-help {
+            float: right;
+        }
+        .select-help label {
+            font-weight: normal;
+            cursor: pointer;
+        }
+        .select-help .check-all {
+            float: left;
+            display: inline-block;
+            margin-right: 8px;
+        }
+    </style>
+
+{% endblock %} {% block content %}
+    <div class="luffy-container">
+        <div class="col-md-3 user-area">
+            <div class="bs-example" data-example-id="table-within-panel">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading">
+                        <i class="fa fa-book" aria-hidden="true"></i> 用户信息
+                    </div>
+                    <ul>
+                        {% for row in user_queryset %}
+                            <li  class="{% if row.id|safe == uid %}active{% endif %}">
+                                <a href="?uid={{ row.id }}">
+                                    {{ row.name }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 role-area">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="roles">
+                <div class="bs-example" data-example-id="table-within-panel">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">
+                            <i class="fa fa-grav" aria-hidden="true"></i> 角色
+                            {% if uid %}
+                                <button type="submit"
+                                    class="btn right btn-success btn-xs"
+                                    style="padding: 2px 8px; margin: -3px">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> 保存
+                                </button>
+                            {% endif %}
+                        </div>
+                        <div class="panel-body" style="color: #d4d4d4; padding: 10px 5px;">
+                            <span>提示:点击用户后才能为其分配角色</span>
+                        </div>
+                        <!-- Table -->
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>名称</th>
+                                    <th>选项</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in role_queryset %}
+                                    <tr class="{% if row.id|safe == rid %}active{% endif %}">
+                                        <td>
+                                            {% if uid %}
+                                                <a href="?uid={{ uid }}&rid={{ row.id }}">
+                                                    {{ row.title }}
+                                                </a>
+                                            {% else %}
+                                                <a href="?rid={{ row.id }}">
+                                                    {{ row.title }}
+                                                </a>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <input
+                                                type="checkbox"
+                                                name="roles"
+                                                id="role"
+                                                value="{{row.id}}"
+                                                {% if row.id in roles_owned_by_user_dict %}checked{% endif %}
+                                            />
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+
+        <div class="col-md-6 access-area">
+            <form action="" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="access">
+                <div class="bs-example" data-example-id="table-within-panel">
+                    <div class="panel panel-default">
+                        <!-- Default panel contents -->
+                        <div class="panel-heading">
+                            <i class="fa fa-gavel" aria-hidden="true"></i> 权限分配
+                            {% if rid %}
+                                <button type="submit"
+                                    class="btn right btn-success btn-xs"
+                                    style="padding: 2px 8px; margin: -3px">
+                                    <i class="fa fa-plus-circle" aria-hidden="true"></i> 保存
+                                </button>
+                            {% endif %}
+                        </div>
+                        <div class="panel-body" style="color: #d4d4d4; padding: 10px 5px;">
+                            <span>提示：点击角色后才能为其分配权限。</span>
+                        </div>
+                        <table>
+                            <tbody>
+                                {% for item in static_queryset %}
+                                    <tr class="root">
+                                        <td>
+                                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                            {{ item.title }}
+                                            <div class="select-help">
+                                                <div class="check-all">
+                                                    <label for="check_all_{{ item.id }}">全选</label>
+                                                    <input
+                                                        type="checkbox"
+                                                        name=""
+                                                        id="check_all_{{ item.id }}"
+                                                    />
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr class="node">
+                                        <td>
+                                            {% for node in item.children %}
+                                                <div class="parent">
+                                                    <input
+                                                        type="checkbox"
+                                                        name="access"
+                                                        id="access_{{ node.id }}"
+                                                        value="{{ node.id }}"
+                                                        {% if node.id in access_owned_dict %}checked{% endif %}
+                                                    />
+                                                    <label for="access_{{ node.id }}"
+                                                    >{{ node.title }} (菜单)
+                                                    </label>
+                                                </div>
+                                                <div class="children">
+                                                    <div class="child">
+                                                        {% for child in node.children %}
+                                                            <input
+                                                                type="checkbox"
+                                                                name="access"
+                                                                id="access_{{ child.id }}"
+                                                                {% if child.id in access_owned_dict %}checked{% endif %}
+                                                                value="{{ child.id }}"
+                                                            />
+                                                            <label for="access_{{ child.id }}">{{ child.title }}</label>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script>
+        $(function () {
+            $('.check-all input:checkbox').change(function(){
+                $(this).parents('.root').next().find(':checkbox').prop('checked', $(this).prop('checked'));
+                console.log(this);
+            });
+        })
+    </script>
+{% endblock js %}

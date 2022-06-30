@@ -1,0 +1,46 @@
+{% extends 'layout.html' %}
+{% load rbac %}
+{% block content %}
+
+    <div class="luffy-container">
+        <div class="btn-group" style="margin: 5px 0">
+            <a class="btn btn-primary btn-success" href="{% url 'rbac:user_add' %}">
+                <i class="fa fa-plus-square" aria-hidden="true"></i> 添加用户
+            </a>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>用户名</th>
+                    <th>邮箱</th>
+                    <!--开始-->
+                    <th>重置密码</th>
+                    <!--结束-->
+                    <th>选项</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in user_queryset %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ row.name }}</td>
+                        <td>{{ row.email }}</td>
+                        <!--开始-->
+                        <td>
+                            <a href="{% url 'rbac:user_reset' pk=row.id%}">重置密码</a>
+                        </td>
+                        <!--结束-->
+                        <td>
+                            <a style="color: #333333;" href="{% url 'rbac:user_edit' pk=row.id %}">
+                                <i class="fa fa-edit" aria-hidden="true"></i></a>
+                            <a style="color: #d9534f;" href="{% url 'rbac:user_del' pk=row.id %}"><i
+                                class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

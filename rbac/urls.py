@@ -26,6 +26,6 @@ urlpatterns = [
     url(r'^multi/access/$', menu.multi_access, name="multi_access"),
     url(r'^multi/access/del/(?P<pk>\d+)/$', menu.multi_access_del, name="multi_access_del"),
     url(r'^access/distribute/$', menu.access_distribute, name="access_distribute"),
-    url(r'^manual/list/$', manual.manual_list, name="manual_list"),
+    # url(r'^manual/list/$', manual.manual_list, name="manual_list"),
     # url(r'^manual/add/$', manual.manual_add, name="manual_add"),
 ]

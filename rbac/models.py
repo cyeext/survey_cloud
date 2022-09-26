@@ -1,8 +1,8 @@
-import markdown
+# import markdown
 from django.db import models
 from django.db.models.fields import CharField
 from django.db.models.fields.related import ForeignKey, ManyToManyField
-from mdeditor.fields import MDTextField
+# from mdeditor.fields import MDTextField
 
 
 # Create your models here.
@@ -60,20 +60,20 @@ class UserInfo(models.Model):
         return self.name
 
 
-class Manual(models.Model):
-    """
-    使用文档
-    """
-    name = models.CharField(max_length=32, verbose_name="文档名称")
-    content = MDTextField(verbose_name="文档内容")
-
-    def get_markdown_content(self):
-        return markdown.markdown(self.content, extensions=[
-            'markdown.extensions.extra',
-            'markdown.extensions.codehilite',
-            'markdown.extensions.toc',
-        ])
-
-    def __str__(self):
-        return self.name
+# class Manual(models.Model):
+#     """
+#     使用文档
+#     """
+#     name = models.CharField(max_length=32, verbose_name="文档名称")
+#     content = MDTextField(verbose_name="文档内容")
+# 
+#     def get_markdown_content(self):
+#         return markdown.markdown(self.content, extensions=[
+#             'markdown.extensions.extra',
+#             'markdown.extensions.codehilite',
+#             'markdown.extensions.toc',
+#         ])
+# 
+#     def __str__(self):
+#         return self.name
 

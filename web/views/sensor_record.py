@@ -3,6 +3,7 @@ from django.http.request import HttpRequest
 from stark.forms.widgets import DateTimePickerInput
 from stark.service.v1 import SearchOption, StarkHandler, StarkModelForm
 from web import models
+import json
 
 
 class SensorRecordModelForm(StarkModelForm):
@@ -64,7 +65,11 @@ class SensorRecordHandler(StarkHandler):
         :param self:
         """
         value = request.GET.get('value')
-        imei = request.GET.get('imei')
+        data = json.loads(value)
+        imei = data["imei"]
+        value = data["Rex1"]
+        value = float(value)
+
         sensor_obj = models.Sensor.objects.filter(imei=imei).first()
         if sensor_obj:
             record_obj = models.SensorRecord.objects.create(value=value)

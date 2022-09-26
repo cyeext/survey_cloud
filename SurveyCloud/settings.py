@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-(=fo#!wj=#j9%3$o$-d(9!ib%^r3tg3-(7esrx@vzh6t&%!-s9
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["124.220.189.12"]
 
 
 # Application definition
@@ -110,7 +110,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/shanghai'
 
 USE_I18N = True
 
@@ -151,7 +151,7 @@ STATIC_SESSION_KEY = "menu_list_key"
 VALID_URLS = [
     '/login/',
     '/admin/.*/',
-    'http://127.0.0.1:8000/stark/web/sensorrecord/add/'
+    '/stark/web/sensorrecord/add/'
 ]
 
 # 登录成功就可以访问的URL名单

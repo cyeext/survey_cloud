@@ -151,6 +151,7 @@ STATIC_SESSION_KEY = "menu_list_key"
 VALID_URLS = [
     '/login/',
     '/admin/.*/',
+    'http://127.0.0.1:8000/stark/web/sensorrecord/add/'
 ]
 
 # 登录成功就可以访问的URL名单

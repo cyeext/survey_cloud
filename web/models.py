@@ -87,7 +87,7 @@ class SensorRecord(models.Model):
     value = models.DecimalField(
         verbose_name="数值", max_digits=5, decimal_places=2)
     sensor = models.ForeignKey(
-        verbose_name="传感器名称", to='sensor', on_delete=models.CASCADE)
+        verbose_name="传感器名称", to='sensor', on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return str(self.date_time) + ': ' + str(self.value)

@@ -1,3 +1,5 @@
+from django.http import HttpResponse
+from django.http.request import HttpRequest
 from stark.forms.widgets import DateTimePickerInput
 from stark.service.v1 import SearchOption, StarkHandler, StarkModelForm
 from web import models
@@ -55,3 +57,18 @@ class SensorRecordHandler(StarkHandler):
     ]
     order_list = ['sensor__name', ]
     # order_list = ['value', ]
+
+    def add_view(self, request):
+        """add_view.
+        添加
+        :param self:
+        """
+        value = request.GET.get('value')
+        imei = request.GET.get('imei')
+        sensor_obj = models.Sensor.objects.filter(imei=imei).first()
+        if sensor_obj:
+            record_obj = models.SensorRecord.objects.create(value=value)
+            record_obj.sensor = sensor_obj
+            record_obj.save()
+            return HttpResponse('ok!')
+        return HttpResponse("sensor does not exist!")

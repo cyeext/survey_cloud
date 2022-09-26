@@ -42,7 +42,7 @@ class Project(models.Model):
     end_date = models.DateField(
         verbose_name='结束日期', null=True, blank=True)
     leader = models.ForeignKey(verbose_name="负责人", to="userinfo",
-                               related_name="project_leader", on_delete=models.CASCADE)
+                               related_name="project_leader", on_delete=models.CASCADE, limit_choices_to={'role__title': '项目经理'})
     teammates = models.ManyToManyField(
         verbose_name="成员", to='userinfo', related_name='project_teammates')
 

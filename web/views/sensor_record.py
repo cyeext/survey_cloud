@@ -1,5 +1,5 @@
 from stark.forms.widgets import DateTimePickerInput
-from stark.service.v1 import StarkHandler, StarkModelForm
+from stark.service.v1 import SearchOption, StarkHandler, StarkModelForm
 from web import models
 
 
@@ -31,8 +31,27 @@ def get_datetime_display(header, field, format="%Y-%m-%d %H:%M:%S"):
 
 class SensorRecordHandler(StarkHandler):
 
-    field_list = ["sensor", get_datetime_display(
+    def multi_delete(self, request):
+        """multi_delete.
+        批量删除功能:
+            执行成功后默认跳转回list，如果要跳转到其他地方，
+            请返回一个重定向, e.g., return redirect('http://www.baidu.com')
+        :param self:
+        """
+        pk_list = request.POST.getlist("pk")
+        self.model_class.objects.filter(id__in=pk_list).delete()
+        # return redirect('http://www.baidu.com')
+
+    multi_delete.text = "批量删除"
+
+    action_list = [multi_delete, ]
+    field_list = [StarkHandler.display_checkbox, "sensor", get_datetime_display(
         "记录时间", "date_time"), "value", ]
 
+    search_list = ['date_time__gt', ]
+
+    search_group = [
+        SearchOption("sensor")
+    ]
     order_list = ['sensor__name', ]
     # order_list = ['value', ]

@@ -35,7 +35,7 @@ class SensorHandler(StarkHandler):
             self.get_url_name('record_view'), pk=obj.pk)
         graph_view_url = self.reverse_url(
             self.get_url_name('graph_view'), pk=obj.pk)
-        return mark_safe("<a href='%s'>表</a>|<a href='%s'>图</a>" % (record_view_url, graph_view_url))
+        return mark_safe("<a target=_blank href='%s'>表</a>|<a target=_blank href='%s'>图</a>" % (record_view_url, graph_view_url))
 
     @property
     def extra_urls(self):
